@@ -101,25 +101,21 @@ class WorldDistances{
 
 		}
 		void replace(int city,string newCity,float lat,float lon){
-			if(city>list.size() || city<1){
-				cout<<"please enter a valid value for the city you want to modify"<<endl;
-			}
-			else{
 
-				ostringstream ss;   
-				ss <<newCity<<space<<lat<<space<<lon<<endl;
-				string getcontent=ss.str();
-				list[city-1]=getcontent;
-				lats[city-1]=lat;
-				lons[city-1]=lon;
-				thefile.open("cities.txt",ios::out);
-				for(int i=0;i<list.size();i++){
-					thefile<<list[i];
-				}
-				thefile.close();
-				cout<<"cities updated!!!";cout<<endl;
+			ostringstream ss;   
+			ss <<newCity<<space<<lat<<space<<lon<<endl;
+			string getcontent=ss.str();
+			list[city-1]=getcontent;
+			lats[city-1]=lat;
+			lons[city-1]=lon;
+			thefile.open("cities.txt",ios::out);
+			for(int i=0;i<list.size();i++){
+				thefile<<list[i];
 			}
+			thefile.close();
+			cout<<"cities updated!!!";cout<<endl;
 		}
+
 		float getDistance(int x,int y){
 			if(x>list.size() || x<1 || y>list.size() || y<1){
 				cout<<"both values entered must be valid"<<endl;
@@ -168,6 +164,9 @@ class WorldDistances{
 				thefile.close();
 			}
 		}
+		int listSize() {
+			return list.size();
+		}
 };
 
 int main(){
@@ -178,6 +177,7 @@ int main(){
 	float lat;
 	float lon;
 	int condition=TRUE;
+	bool isValid = FALSE;
 
 	while(condition){
 		//menu
@@ -210,12 +210,28 @@ int main(){
 
 			float lat;
 			float lon;
-			cities.display();
-			cout<<"enter a number for the city you want to replace: ";cin>>city;
+
+			while(!isValid) {
+				cities.display();
+				cout<<"enter a number for the city you want to modify: ";cin>>city;
+				if(!cin) {
+					// user didn't input a number
+					cin.clear(); // reset failbit
+					cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //skip bad input
+				}
+				if(city>cities.listSize() || city<1 || isalpha(city)){
+					cout<<"value entered is not valid, please try again"<<endl;
+				}
+				else {
+					isValid = TRUE;
+				}
+			}
 			cout<<"enter new city name: ";cin>>newCity;
 			cout<< "enter a the new latitude coordinate: ";cin>>lat;
 			cout<< "enter a the new longitude coordinate: ";cin>>lon;
 			cout<<"\n";
+
+
 
 			cities.replace(city,newCity,lat,lon);
 
