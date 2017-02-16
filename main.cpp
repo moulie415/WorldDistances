@@ -29,6 +29,38 @@ class WorldDistances{
         vector<float> lats;//for storing latitude coorindates as floats
         vector<float> lons;//for storing longitude coorindates as floats
         
+	
+	//Constructor that reads cities file and adds any previously added cities
+        WorldDistances() {
+        	ifstream ifs("cities.txt");
+        	string line;
+
+        	while(getline(ifs, line)) {
+        	    stringstream s(line);
+				string word;
+				string city;
+				float lat;
+				float lon;
+	
+				for (int i = 0; s >> word; i++) {
+    				if (i == 0) {
+    					city = word;
+				}
+				    else if (i == 1) {
+				    lat = stof(word);
+				    }
+				    
+				    else if (i == 2) {
+				    lon = stof(word);
+				    }
+				    else {
+				    cout << "error with format of cities.txt file" << endl;
+				    }	 
+        	}
+        	addCity(city, lat, lon);
+        	}
+        	
+        }
         
         void addCity(string city,float x,float y){
             lats.push_back(x);
@@ -75,7 +107,7 @@ class WorldDistances{
         }
         void replace(int city,string newCity,float lat,float lon){
             if(city>list.size() || city<1){
-                cout<<"please enter a valid value for the city you want to replace"<<endl;
+                cout<<"please enter a valid value for the city you want to modify"<<endl;
             }
             else{
                 
@@ -98,6 +130,7 @@ class WorldDistances{
         float getDistance(int x,int y){
             if(x>list.size() || x<1 || y>list.size() || y<1){
                 cout<<"both values entered must be valid"<<endl;
+		return 0;
             }
             else{
             //fetch longitude and latitude coordinates from lats and lons vectors
@@ -180,7 +213,7 @@ int main(){
     switch(i)
     {case 1: 
         
-        cout<< "enter a city: ";cin>>city;
+        cout<< "enter city name: ";cin>>city;
         cout<< "enter a the latitude coordinate: ";cin>>lat;
         cout<< "enter a the longitude coordinate: ";cin>>lon;
         cout<<"\n";
