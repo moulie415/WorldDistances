@@ -1,4 +1,4 @@
 # WorldDistances
 
-A simple c++ program that stores cities in cities.txt file and can calculate the distance between two cities in km
-
+A simple c++ program that stores cities in cities.txt file and can calculate the distance between two cities in km.
+Example cities.txt file given with the correct formatting.
